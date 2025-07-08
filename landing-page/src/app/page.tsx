@@ -1,24 +1,40 @@
-import Image from "next/image";
+"use client";
 import { useState } from "react";
 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyKLE0UyLgeLG3lTgWDh8ph8YYu4p3EWS9TpZGhtEvSs2mHhWq4oeoPA41Qwtb_Qd3CQQ/exec";
+    
 export default function Home() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       setError("Please fill in all fields.");
       return;
     }
     setError("");
-    setSubmitted(true);
-    // Here you would handle sending the form data to your backend or email service
+    setLoading(true);
+    try {
+      const formBody = new URLSearchParams(form).toString();
+      const res = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formBody,
+      });
+      if (!res.ok) throw new Error("Failed to submit");
+      setSubmitted(true);
+    } catch (err) {
+      setError("There was a problem submitting the form. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,11 +42,6 @@ export default function Home() {
       <main className="flex flex-col items-center w-full max-w-3xl gap-12 mt-12">
         {/* Hero Section */}
         <section className="flex flex-col items-center text-center gap-6">
-          <div className="rounded-full bg-gradient-to-tr from-blue-400/30 via-purple-400/30 to-pink-400/30 p-2 mb-2">
-            <div className="rounded-full bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 p-1">
-              <Image src="/next.svg" alt="NeuroCogAI Logo" width={80} height={80} className="invert" />
-            </div>
-          </div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight bg-gradient-to-tr from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
             NeuroCogAI
           </h1>
@@ -98,9 +109,10 @@ export default function Home() {
               {error && <div className="text-red-400 text-sm">{error}</div>}
               <button
                 type="submit"
-                className="bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 text-white font-semibold py-2 rounded shadow hover:opacity-90 transition"
+                className="bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 text-white font-semibold py-2 rounded shadow hover:opacity-90 transition disabled:opacity-60"
+                disabled={loading}
               >
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
           )}
