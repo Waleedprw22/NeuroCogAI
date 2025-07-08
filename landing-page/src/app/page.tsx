@@ -30,7 +30,7 @@ export default function Home() {
       });
       if (!res.ok) throw new Error("Failed to submit");
       setSubmitted(true);
-    } catch (err) {
+    } catch {
       setError("There was a problem submitting the form. Please try again later.");
     } finally {
       setLoading(false);
@@ -68,16 +68,16 @@ export default function Home() {
           <div className="bg-gray-800/80 rounded-xl p-6 flex flex-col items-center shadow-lg border border-gray-700">
             <span className="text-3xl mb-2">🚀</span>
             <h3 className="font-semibold text-lg mb-1">Innovation Unleashed</h3>
-            <p className="text-gray-400 text-sm text-center">Push the boundaries of what's possible with AI that learns and adapts like the human brain.</p>
+            <p className="text-gray-400 text-sm text-center">Push the boundaries of what&apos;s possible with AI that learns and adapts like the human brain.</p>
           </div>
         </section>
 
         {/* Contact Form */}
         <section className="w-full bg-gray-900/80 rounded-2xl p-8 shadow-xl border border-gray-700 flex flex-col items-center">
           <h3 className="text-2xl font-bold mb-2 bg-gradient-to-tr from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Contact Us</h3>
-          <p className="text-gray-400 mb-6 text-center">Interested in learning more or partnering with us? Fill out the form below and we'll get in touch.</p>
+          <p className="text-gray-400 mb-6 text-center">Interested in learning more or partnering with us? Fill out the form below and we&apos;ll get in touch.</p>
           {submitted ? (
-            <div className="text-green-400 font-semibold text-center">Thank you for reaching out! We'll be in touch soon.</div>
+            <div className="text-green-400 font-semibold text-center">Thank you for reaching out! We&apos;ll be in touch soon.</div>
           ) : (
             <form className="flex flex-col gap-4 w-full max-w-md" onSubmit={handleSubmit}>
               <input
