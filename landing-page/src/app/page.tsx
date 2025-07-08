@@ -1,102 +1,113 @@
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.message) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    setError("");
+    setSubmitted(true);
+    // Here you would handle sending the form data to your backend or email service
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 text-white px-4 py-8">
+      <main className="flex flex-col items-center w-full max-w-3xl gap-12 mt-12">
+        {/* Hero Section */}
+        <section className="flex flex-col items-center text-center gap-6">
+          <div className="rounded-full bg-gradient-to-tr from-blue-400/30 via-purple-400/30 to-pink-400/30 p-2 mb-2">
+            <div className="rounded-full bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 p-1">
+              <Image src="/next.svg" alt="NeuroCogAI Logo" width={80} height={80} className="invert" />
+            </div>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight bg-gradient-to-tr from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            NeuroCogAI
+          </h1>
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-200 max-w-xl">
+            Transforming AI Efficiency with Neuroscience
+          </h2>
+          <p className="text-gray-400 max-w-2xl mt-2">
+            Inspired by the brain, NeuroCogAI delivers next-generation AI efficiency. We bridge neuroscience and artificial intelligence to unlock new levels of performance, adaptability, and innovation for your business.
+          </p>
+        </section>
+
+        {/* Key Benefits */}
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full">
+          <div className="bg-gray-800/80 rounded-xl p-6 flex flex-col items-center shadow-lg border border-gray-700">
+            <span className="text-3xl mb-2">🧠</span>
+            <h3 className="font-semibold text-lg mb-1">Neuroscience-Driven</h3>
+            <p className="text-gray-400 text-sm text-center">Our models are inspired by the latest neuroscience research, enabling smarter, more adaptive AI.</p>
+          </div>
+          <div className="bg-gray-800/80 rounded-xl p-6 flex flex-col items-center shadow-lg border border-gray-700">
+            <span className="text-3xl mb-2">⚡</span>
+            <h3 className="font-semibold text-lg mb-1">Unmatched Efficiency</h3>
+            <p className="text-gray-400 text-sm text-center">Achieve more with less. NeuroCogAI optimizes resource use, delivering faster, greener, and more cost-effective AI.</p>
+          </div>
+          <div className="bg-gray-800/80 rounded-xl p-6 flex flex-col items-center shadow-lg border border-gray-700">
+            <span className="text-3xl mb-2">🚀</span>
+            <h3 className="font-semibold text-lg mb-1">Innovation Unleashed</h3>
+            <p className="text-gray-400 text-sm text-center">Push the boundaries of what's possible with AI that learns and adapts like the human brain.</p>
+          </div>
+        </section>
+
+        {/* Contact Form */}
+        <section className="w-full bg-gray-900/80 rounded-2xl p-8 shadow-xl border border-gray-700 flex flex-col items-center">
+          <h3 className="text-2xl font-bold mb-2 bg-gradient-to-tr from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Contact Us</h3>
+          <p className="text-gray-400 mb-6 text-center">Interested in learning more or partnering with us? Fill out the form below and we'll get in touch.</p>
+          {submitted ? (
+            <div className="text-green-400 font-semibold text-center">Thank you for reaching out! We'll be in touch soon.</div>
+          ) : (
+            <form className="flex flex-col gap-4 w-full max-w-md" onSubmit={handleSubmit}>
+              <input
+                className="rounded px-4 py-2 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={form.name}
+                onChange={handleChange}
+                required
+              />
+              <input
+                className="rounded px-4 py-2 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+              <textarea
+                className="rounded px-4 py-2 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[100px]"
+                name="message"
+                placeholder="Your Message"
+                value={form.message}
+                onChange={handleChange}
+                required
+              />
+              {error && <div className="text-red-400 text-sm">{error}</div>}
+              <button
+                type="submit"
+                className="bg-gradient-to-tr from-blue-500 via-purple-600 to-pink-500 text-white font-semibold py-2 rounded shadow hover:opacity-90 transition"
+              >
+                Send Message
+              </button>
+            </form>
+          )}
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="mt-16 text-gray-500 text-xs text-center w-full">
+        &copy; {new Date().getFullYear()} NeuroCogAI. All rights reserved.
       </footer>
     </div>
   );
